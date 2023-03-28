@@ -30,16 +30,23 @@ router.get('/drones/:id', async (req, res, next) => {
 
 // @desc    Create new drone
 // @route   POST /drones
-// @access  Public
+// @access  Private
 router.post('/drones', async (req, res, next) => {
   try {
-    const drone = new Drone(req.body); //better with create({})?
+    // adds the user ._id from req.payload to the drone
+    const droneData = {
+      ...req.body,
+      user: req.payload._id
+    };
+
+    const drone = new Drone(droneData);
     await drone.save();
     res.status(201).json(drone);
   } catch (error) {
     res.status(500).json({ message: 'Error creating drone when post/drones' });
   }
 });
+
 
 // @desc    Update drone by ID
 // @route   PUT /drones/:id
