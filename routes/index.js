@@ -33,7 +33,7 @@ router.get('/drones/:id', async (req, res, next) => {
 // @access  Public
 router.post('/drones', async (req, res, next) => {
   try {
-    const drone = new Drone(req.body);
+    const drone = new Drone(req.body); //better with create({})?
     await drone.save();
     res.status(201).json(drone);
   } catch (error) {
@@ -51,6 +51,7 @@ router.put('/drones/:id', async (req, res, next) => {
       return res.status(404).json({ message: 'Drone not found when /drones/:id' });
     }
     res.status(200).json(drone);
+    console.log("Drone Updated!");
   } catch (error) {
     res.status(500).json({ message: 'Error updating drone' });
   }
