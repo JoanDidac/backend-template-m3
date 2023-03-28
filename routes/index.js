@@ -1,5 +1,7 @@
 const router = require('express').Router();
 const Drone = require('../models/Drone');
+const Like = require('../models/Like');
+const { isAuthenticated } = require('../middlewares/jwt');
 
 // @desc    Get all drones
 // @route   GET /drones
@@ -44,6 +46,31 @@ router.post('/drones', async (req, res, next) => {
     res.status(201).json(drone);
   } catch (error) {
     res.status(500).json({ message: 'Error creating drone when post/drones' });
+  }
+});
+
+// @desc    Like a drone
+// @route   POST /drones/:id/likes
+// @access  Private
+router.post('/drones/:id/likes', isAuthenticated, async (req, res, next) => {
+  try {
+    const droneId = req.params.id;
+    const userId = req.payload._id;
+
+    // Check if like  exists
+    const existingLike = await Like.findOne({ drone: droneId, user: userId });
+
+    if (existingLike) {
+      return res.status(400).json({ message: 'User already liked this drone' });
+    }
+
+    // Create  like
+    const like = new Like({ drone: droneId, user: userId });
+    await like.save();
+
+    res.status(201).json({ message: 'Drone liked successfully' });
+  } catch (error) {
+    res.status(500).json({ message: 'Error liking drone' });
   }
 });
 
