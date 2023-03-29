@@ -7,7 +7,7 @@ const likeSchema = new Schema({
     ref: "Drone",
     required: true
   },
-  user: {
+  username: {
     type: Schema.Types.ObjectId,
     ref: "User",
     required: true

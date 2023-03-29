@@ -26,7 +26,7 @@ const userSchema = new Schema({
   });
   //static methods for the User schema. callback to be defined. callback is handling the result of the update/delete request.
   userSchema.statics.updateUser = (id, updateData, callback) => {
-    this.findByIdAndUpdate(id, updateData, { new: true }, (error, updatedUser) => {
+    userSchema.findByIdAndUpdate(id, updateData, { new: true }, (error, updatedUser) => {
       if (error) {
         callback(error);
       } else {
@@ -36,7 +36,7 @@ const userSchema = new Schema({
   };
   
   userSchema.statics.deleteUser = (id, callback) => {
-    this.findByIdAndDelete(id, (error, deletedUser) => {
+    userSchema.findByIdAndDelete(id, (error, deletedUser) => {
       if (error) {
         callback(error);
       } else {

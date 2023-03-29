@@ -49,13 +49,19 @@ router.post('/drones', async (req, res, next) => {
   }
 });
 
-// @desc    Like a drone
+// @desc    LIKE a drone
 // @route   POST /drones/:id/likes
 // @access  Private
 router.post('/drones/:id/likes', isAuthenticated, async (req, res, next) => {
   try {
     const droneId = req.params.id;
     const userId = req.payload._id;
+    const drone = await Drone.findById(droneId);
+    //check if drone id is valid
+      if (!drone) {
+        return res.status(404).json({ message: 'Drone not found' });
+      }
+
 
     // Check if like  exists
     const existingLike = await Like.findOne({ drone: droneId, user: userId });
@@ -68,9 +74,9 @@ router.post('/drones/:id/likes', isAuthenticated, async (req, res, next) => {
     const like = new Like({ drone: droneId, user: userId });
     await like.save();
 
-    res.status(201).json({ message: 'Drone liked successfully' });
+    res.status(201).json({ message: 'Drone liked aamigo' });
   } catch (error) {
-    res.status(500).json({ message: 'Error liking drone' });
+    res.status(500).json({ message: 'Error liking the drone my friendo' });
   }
 });
 
@@ -86,6 +92,11 @@ router.put('/drones/:id', async (req, res, next) => {
     }
     res.status(200).json(drone);
     console.log("Drone Updated!");
+    //check if the id is valid
+    if (!mongoose.Types.ObjectId.isValid(req.params.id)) {
+      return res.status(400).json({ message: 'Drone not found' });
+    }
+    
   } catch (error) {
     res.status(500).json({ message: 'Error updating drone' });
   }
