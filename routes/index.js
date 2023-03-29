@@ -3,7 +3,7 @@ const Drone = require('../models/Drone');
 const Like = require('../models/Like');
 const { isAuthenticated } = require('../middlewares/jwt');
 
-// @desc    Get all drones
+// @desc    GET ALL drones
 // @route   GET /drones
 // @access  Public
 router.get('/drones', async (req, res, next) => {
@@ -15,7 +15,7 @@ router.get('/drones', async (req, res, next) => {
   }
 });
 
-// @desc    Get single drone by ID
+// @desc    GET SINGLE drone by ID
 // @route   GET /drones/:id
 // @access  Public
 router.get('/drones/:id', async (req, res, next) => {
@@ -30,7 +30,7 @@ router.get('/drones/:id', async (req, res, next) => {
   }
 });
 
-// @desc    Create new drone
+// @desc    CREATE NEW drone
 // @route   POST /drones
 // @access  Private
 router.post('/drones', async (req, res, next) => {
@@ -81,7 +81,7 @@ router.post('/drones/:id/likes', isAuthenticated, async (req, res, next) => {
 });
 
 
-// @desc    Update drone by ID
+// @desc    UPDATE drone by ID
 // @route   PUT /drones/:id
 // @access  Public
 router.put('/drones/:id', async (req, res, next) => {
@@ -102,9 +102,9 @@ router.put('/drones/:id', async (req, res, next) => {
   }
 });
 
-// @desc    Delete drone by ID
+// @desc    DELETE drone by ID
 // @route   DELETE /drones/:id
-// @access  Public
+// @access  Public???
 router.delete('/drones/:id', async (req, res, next) => {
   try {
     const drone = await Drone.findByIdAndDelete(req.params.id);
@@ -116,5 +116,28 @@ router.delete('/drones/:id', async (req, res, next) => {
     res.status(500).json({ message: 'Error deleting drone' });
   }
 });
+
+// ...
+
+// @desc    CREATE POST with media
+// @route   POST /posts
+// @access  Private
+router.post('/posts', async (req, res, next) => {
+  try {
+    const userId = req.payload._id;
+    const postTitle = req.body.title;
+    const postMessage = req.body.message;
+    const mediaUrls = req.body.mediaUrls;
+
+    await createPostWithMedia(userId, postTitle, postMessage, mediaUrls);
+
+    res.status(201).json({ message: 'Post created with media successfully' });
+  } catch (error) {
+    res.status(500).json({ message: 'Error creating post with media' });
+  }
+});
+
+module.exports = router;
+
 
 module.exports = router;
