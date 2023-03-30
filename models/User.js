@@ -1,5 +1,6 @@
 const mongoose = require("mongoose");
 const { Schema, model } = mongoose;
+const User = mongoose.model('User', userSchema);
 
 const userSchema = new Schema({
   email: {
@@ -35,8 +36,8 @@ const userSchema = new Schema({
     });
   };
   
-  userSchema.statics.deleteUser = (id, callback) => {
-    userSchema.findByIdAndDelete(id, (error, deletedUser) => {
+  User.statics.deleteUser = (id, callback) => {
+    User.findByIdAndDelete(id, (error, deletedUser) => {
       if (error) {
         callback(error);
       } else {

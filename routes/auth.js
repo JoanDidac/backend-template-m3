@@ -6,7 +6,7 @@ const { isAuthenticated, isAdmin } = require('../middlewares/jwt');
 const saltRounds = 10;
 
 // @desc    SIGN UP new user
-// @route   POST /api/v1/auth/signup
+// @route   POST /api/v1/auth/signup  --- > http://localhost:8080/auth/signup
 // @access  Public
 router.post('/signup', async (req, res, next) => {
   const { email, password, username } = req.body;
@@ -44,7 +44,7 @@ router.post('/signup', async (req, res, next) => {
 });
 
 // @desc    LOG IN user
-// @route   POST /api/v1/auth/login
+// @route   POST /api/v1/auth/login ---> http://localhost:8080/api/v1/auth/login
 // @access  Public
 router.post('/login', async (req, res, next) => { 
   console.log(req.headers);
@@ -89,16 +89,52 @@ router.post('/login', async (req, res, next) => {
 });
 
 // @desc    GET logged in user
-// @route   GET /api/v1/auth/me
+// @route   GET 
 // @access  Private
 router.get('/me', isAuthenticated, (req, res, next) => {
-  // If JWT token is valid: payload gets decoded by the
-  // isAuthenticated middleware and made available on req.payload
-  console.log('Whose token is on the request:', req.payload);
-  // Send back the object with user data
-  // previously set as the token payload
-  res.status(200).json(req.payload);
-  
+  try {
+    // If JWT token is valid: payload gets decoded by the
+    // isAuthenticated middleware and made available on req.payload
+    console.log('Whose token is on the request:', req.payload);
+    // Send back the object with user data
+    // previously set as the token payload
+    res.status(200).json(req.payload);
+  } catch (error) {
+    next(error);
+  }
 })
+
+// @desc    EDIT USER
+// @route   PUT 
+// @access  Private
+router.put('/:id', isAuthenticated, async (req, res, next) => {
+  try {
+    const { id } = req.params;
+    const updatedUser = await User.findByIdAndUpdate(id, req.body, { new: true });
+    if (!updatedUser) {
+      return res.status(404).json({ success: false, message: 'User not found' });
+    }
+    res.status(200).json({ success: true, data: updatedUser });
+  } catch (error) {
+    next(error);
+  }
+});
+
+// @desc    DELETE user
+// @route   DELETE 
+// @access  Private
+router.delete('/:id', isAuthenticated, async (req, res, next) => {
+  try {
+    const { id } = req.params;
+    const deletedUser = await User.findByIdAndDelete(id);
+    if (!deletedUser) {
+      return res.status(404).json({ success: false, message: 'User not found' });
+    }
+    res.status(200).json({ success: true, data: deletedUser });
+  } catch (error) {
+    next(error);
+  }
+});
+
 
 module.exports = router;
