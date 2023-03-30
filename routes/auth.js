@@ -44,7 +44,7 @@ router.post('/signup', async (req, res, next) => {
 });
 
 // @desc    LOG IN user
-// @route   POST /api/v1/auth/login ---> http://localhost:8080/api/v1/auth/login
+// @route   POST /auth/login 
 // @access  Public
 router.post('/login', async (req, res, next) => { 
   console.log(req.headers);
@@ -55,7 +55,7 @@ router.post('/login', async (req, res, next) => {
     return;
   }
   try {
-    // First let's see if the user exists
+    //  user exists?
     const userInDB = await User.findOne({ email });
     // If they don't exist, return an error
     if (!userInDB) {
@@ -64,7 +64,7 @@ router.post('/login', async (req, res, next) => {
     } else {
       const passwordMatches = bcrypt.compareSync(password, userInDB.hashedPassword);
       if (passwordMatches) {
-        // Let's create what we want to store in the jwt token
+        // store in the jwt token
         const payload = {
           email: userInDB.email,
           username: userInDB.username,
@@ -79,7 +79,7 @@ router.post('/login', async (req, res, next) => {
         );
         res.status(200).json({ authToken: authToken })
       } else {
-        // If the password is not right, return an error
+        // password is not right, return an error
         res.status(401).json({ success: false, message: 'Unable to authenticate user'})
       }
     }
@@ -89,7 +89,7 @@ router.post('/login', async (req, res, next) => {
 });
 
 // @desc    GET logged in user
-// @route   GET 
+// @route   GET ?
 // @access  Private
 router.get('/me', isAuthenticated, (req, res, next) => {
   try {
@@ -121,7 +121,7 @@ router.put('/:id', isAuthenticated, async (req, res, next) => {
 });
 
 // @desc    DELETE user
-// @route   DELETE 
+// @route   DELETE auth/:id?
 // @access  Private
 router.delete('/:id', isAuthenticated, async (req, res, next) => {
   try {

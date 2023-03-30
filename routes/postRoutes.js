@@ -1,0 +1,60 @@
+const router = require('express').Router();
+const { isAuthenticated } = require('../middlewares/jwt');
+
+
+
+// ...
+
+// @desc    CREATE POST with media
+// @route   POST /posts
+// @access  Private
+router.post('/posts', isAuthenticated , async (req, res, next) => {
+  try {
+    const userId = req.payload._id;
+    const postTitle = req.body.title;
+    const postMessage = req.body.message;
+    const mediaUrls = req.body.mediaUrls;
+
+    await createPostWithMedia(userId, postTitle, postMessage, mediaUrls);
+
+    res.status(201).json({ message: 'Post created with media successfully ✓' });
+  } catch (error) {
+    res.status(500).json({ message: 'Error creating post with media pal 🤬' });
+  }
+});
+
+// @desc    UPDATE POST by ID
+// @route   PUT /posts/:id
+// @access  Private
+router.put('/posts/:id', isAuthenticated, async (req, res, next) => {
+  try {
+    const postId = req.params.id;
+    const userId = req.payload._id;
+
+    const post = await UserPost.findById(postId);
+    if (!post) {
+      return res.status(404).json({ message: 'Post not found' });
+    }
+
+    if (post.user.toString() !== userId) {
+      return res.status(403).json({ message: 'Unauthorized to update this post' });
+    }
+
+    const updatedPost = await UserPost.findByIdAndUpdate(postId, req.body, { new: true });
+
+    res.status(200).json(updatedPost);
+  } catch (error) {
+    res.status(500).json({ message: 'Error updating post' });
+  }
+});
+
+// @desc    DELETE POST with media
+// @route   /posts
+// @access  Private 
+// Owner of the post's id must be the same as the current user's id in req.payload
+
+
+module.exports = router;
+
+
+
