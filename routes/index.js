@@ -18,7 +18,7 @@ router.get('/drones', async (req, res, next) => {
 // @desc    GET SINGLE drone by ID
 // @route   GET /drones/:id
 // @access  Public
-router.get('/drones/:id', async (req, res, next) => {
+router.get('/drones/:id', isAuthenticated, async (req, res, next) => {
   try {
     const drone = await Drone.findById(req.params.id);
     if (!drone) {
@@ -33,7 +33,7 @@ router.get('/drones/:id', async (req, res, next) => {
 // @desc    CREATE NEW drone
 // @route   POST /drones
 // @access  Private
-router.post('/drones', async (req, res, next) => {
+router.post('/drones', isAuthenticated, async (req, res, next) => {
   try {
     // adds the user ._id from req.payload to the drone
     const droneData = {
@@ -83,8 +83,8 @@ router.post('/drones/:id/likes', isAuthenticated, async (req, res, next) => {
 
 // @desc    UPDATE drone by ID
 // @route   PUT /drones/:id
-// @access  Public
-router.put('/drones/:id', async (req, res, next) => {
+// @access  Private
+router.put('/drones/:id', isAuthenticated, async (req, res, next) => {
   try {
     const drone = await Drone.findByIdAndUpdate(req.params.id, req.body, { new: true });
     if (!drone) {
@@ -105,7 +105,7 @@ router.put('/drones/:id', async (req, res, next) => {
 // @desc    DELETE drone by ID
 // @route   DELETE /drones/:id
 // @access  Public???
-router.delete('/drones/:id', async (req, res, next) => {
+router.delete('/drones/:id', isAuthenticated, async (req, res, next) => {
   try {
     const drone = await Drone.findByIdAndDelete(req.params.id);
     if (!drone) {
@@ -122,7 +122,7 @@ router.delete('/drones/:id', async (req, res, next) => {
 // @desc    CREATE POST with media
 // @route   POST /posts
 // @access  Private
-router.post('/posts', async (req, res, next) => {
+router.post('/posts', isAuthenticated , async (req, res, next) => {
   try {
     const userId = req.payload._id;
     const postTitle = req.body.title;
@@ -131,13 +131,38 @@ router.post('/posts', async (req, res, next) => {
 
     await createPostWithMedia(userId, postTitle, postMessage, mediaUrls);
 
-    res.status(201).json({ message: 'Post created with media successfully' });
+    res.status(201).json({ message: 'Post created with media successfully ✓' });
   } catch (error) {
-    res.status(500).json({ message: 'Error creating post with media' });
+    res.status(500).json({ message: 'Error creating post with media pal 🤬' });
+  }
+});
+
+// @desc    UPDATE POST by ID
+// @route   PUT /posts/:id
+// @access  Private
+router.put('/posts/:id', isAuthenticated, async (req, res, next) => {
+  try {
+    const postId = req.params.id;
+    const userId = req.payload._id;
+
+    const post = await UserPost.findById(postId);
+    if (!post) {
+      return res.status(404).json({ message: 'Post not found' });
+    }
+
+    if (post.user.toString() !== userId) {
+      return res.status(403).json({ message: 'Unauthorized to update this post' });
+    }
+
+    const updatedPost = await UserPost.findByIdAndUpdate(postId, req.body, { new: true });
+
+    res.status(200).json(updatedPost);
+  } catch (error) {
+    res.status(500).json({ message: 'Error updating post' });
   }
 });
 
 module.exports = router;
 
 
-module.exports = router;
+
