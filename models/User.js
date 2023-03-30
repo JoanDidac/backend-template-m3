@@ -1,6 +1,6 @@
 const mongoose = require("mongoose");
 const { Schema, model } = mongoose;
-const User = mongoose.model('User', userSchema);
+
 
 const userSchema = new Schema({
   email: {
@@ -25,6 +25,8 @@ const userSchema = new Schema({
   {
     timestamps: true
   });
+
+  
   //static methods for the User schema. callback to be defined. callback is handling the result of the update/delete request.
   userSchema.statics.updateUser = (id, updateData, callback) => {
     userSchema.findByIdAndUpdate(id, updateData, { new: true }, (error, updatedUser) => {
@@ -35,9 +37,11 @@ const userSchema = new Schema({
       }
     });
   };
+
+
   
-  User.statics.deleteUser = (id, callback) => {
-    User.findByIdAndDelete(id, (error, deletedUser) => {
+  userSchema.statics.deleteUser = (id, callback) => {
+    userSchema.findByIdAndDelete(id, (error, deletedUser) => {
       if (error) {
         callback(error);
       } else {
