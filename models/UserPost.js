@@ -16,8 +16,7 @@ const userPostSchema = new Schema({
     required: true
   },
   media: [{
-    type: Schema.Types.ObjectId,
-    ref: 'Media',
+    type: String
   }]
 },
   {

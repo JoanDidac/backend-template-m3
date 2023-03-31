@@ -6,7 +6,7 @@ const logger = require('morgan');
 const cors = require('cors');
 
 // Routers require
-const indexRouter = require('./routes/postRoutes');
+const postRoutes = require('./routes/postRoutes');
 const authRouter = require('./routes/auth');
 const droneRouter = require('./routes/droneRoutes');
 
@@ -23,10 +23,10 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 
 // routes intro
-app.use('/', indexRouter);
+app.use('/', postRoutes);
 app.use('/auth', authRouter);
 app.use('/drones', droneRouter);
-
+app.use('/', postRoutes);
 // catch 404 and forward to error handler
 app.use(function (err ,req, res, next) {
   next(createError(404));
