@@ -17,7 +17,20 @@ const userPostSchema = new Schema({
   },
   media: [{
     type: String
-  }]
+  }],
+  location: {
+    type: {
+      latitude: {
+        type: Number,
+        required: true
+      },
+      longitude: {
+        type: Number,
+        required: true
+      }
+    },
+    required: true
+  }
 },
   {
     timestamps: true
