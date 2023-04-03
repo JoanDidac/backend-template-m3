@@ -10,6 +10,7 @@ const postRoutes = require('./routes/postRoutes');
 const authRouter = require('./routes/auth');
 const droneRouter = require('./routes/droneRoutes');
 const reviewDrone = require('./routes/reviewDroneRoutes');
+const likeRoutes = require('./routes/likeRoutes');
 
 const app = express();
 
@@ -27,7 +28,8 @@ app.use(express.urlencoded({ extended: false }));
 app.use('/', postRoutes);
 app.use('/auth', authRouter);
 app.use('/drones', droneRouter);
-app.use('/reviews', reviewDrone)
+app.use('/reviews', reviewDrone);
+app.use('/likes' , likeRoutes)
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
