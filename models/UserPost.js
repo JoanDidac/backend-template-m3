@@ -15,21 +15,22 @@ const userPostSchema = new Schema({
     type: String,
     required: true
   },
-  media: [{
-    type: String
-  }],
+  media: {
+    type: String,
+    required:true
+  },
   location: {
     type: {
       latitude: {
         type: Number,
-        required: true
+        // required: true
       },
       longitude: {
         type: Number,
-        required: true
+        // required: true
       }
     },
-    required: true
+    // required: true
   }
 },
   {

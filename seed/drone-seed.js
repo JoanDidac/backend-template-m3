@@ -18,14 +18,13 @@ const initialDrones = [
   {
     model: "Parrot Anafi",
     brand: "Parrot",
-    imageUrl: "https://i.pcmag.com/imagery/reviews/03PFj9d5ZpcOZmd7fYjYJ0o-16.fit_scale.size_1028x578.v1569481934.jpg", //urban -bg:https://helios-i.mashable.com/imagery/reviews/06YClIC27fsNrZOe6jdjjl2/hero-image.fill.size_1248x702.v1623372373.jpg , flying -bg:https://helios-i.mashable.com/imagery/reviews/06YClIC27fsNrZOe6jdjjl2/images-7.fill.size_2000x1333.v1611697454.jpg, snow-bg: https://www.drohnen-vergleich.de/wp-content/uploads/2019/02/Parrot_Anafi_Start.jpg 
-    specs: {
+    imageUrl: "https://i.pcmag.com/imagery/reviews/03PFj9d5ZpcOZmd7fYjYJ0o-16.fit_scale.size_1028x578.v1569481934.jpg", 
       maxFlightTime: 25,
       maxSpeed: 55,
       range: 4,
       weight: 320,
       dimensions: "180 x 75 x 55 mm"
-    }
+    
   },
   {
     model: "Autel Robotics EVO II",

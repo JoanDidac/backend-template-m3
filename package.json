@@ -3,7 +3,7 @@
   "version": "0.0.0",
   "private": true,
   "scripts": {
-    "seed": "node ./seed/post-seed",
+    "seed": "node ./seed/reviews-seed",
     "dev": "nodemon ./bin/www",
     "start": "node ./bin/www"
   },
