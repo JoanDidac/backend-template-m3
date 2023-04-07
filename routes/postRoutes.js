@@ -129,64 +129,64 @@ router.post('/posts/:postId/comments', isAuthenticated, async (req, res, next) =
 // @desc    UPDATE comment
 // @route   PUT /posts/:postId/comments/:commentId
 // @access  Private
-router.put('/posts/:postId/comments/:commentId', isAuthenticated, async (req, res, next) => {
-  try {
-    const postId = req.params.postId;
-    const commentId = req.params.commentId;
-    const userId = req.payload._id;
+// router.put('/posts/:postId/comments/:commentId', isAuthenticated, async (req, res, next) => {
+//   try {
+//     const postId = req.params.postId;
+//     const commentId = req.params.commentId;
+//     const userId = req.payload._id;
 
-    const post = await UserPost.findById(postId);
-    if (!post) {
-      return res.status(404).json({ message: 'Post not found' });
-    }
+//     const post = await UserPost.findById(postId);
+//     if (!post) {
+//       return res.status(404).json({ message: 'Post not found' });
+//     }
 
-    const comment = await Comments.findById(commentId);
-    if (!comment) {
-      return res.status(404).json({ message: 'Comment not found' });
-    }
+//     const comment = await Comments.findById(commentId);
+//     if (!comment) {
+//       return res.status(404).json({ message: 'Comment not found' });
+//     }
 
-    if (comment.user.toString() !== userId) {
-      return res.status(403).json({ message: 'Unauthorized to update this comment' });
-    }
+//     if (comment.user.toString() !== userId) {
+//       return res.status(403).json({ message: 'Unauthorized to update this comment' });
+//     }
 
-    const updatedComment = await Comments.findByIdAndUpdate(commentId, req.body, { new: true });
+//     const updatedComment = await Comments.findByIdAndUpdate(commentId, req.body, { new: true });
 
-    res.status(200).json(updatedComment);
-  } catch (error) {
-    res.status(500).json({ message: 'Error updating comment' });
-  }
-});
+//     res.status(200).json(updatedComment);
+//   } catch (error) {
+//     res.status(500).json({ message: 'Error updating comment' });
+//   }
+// });
 
 // @desc    DELETE comment
 // @route   DELETE /posts/:postId/comments/:commentId
 // @access  Private
-router.delete('/posts/:postId/comments/:commentId', isAuthenticated, async (req, res, next) => {
-  try {
-    const postId = req.params.postId;
-    const commentId = req.params.commentId;
-    const userId = req.payload._id;
+// router.delete('/posts/:postId/comments/:commentId', isAuthenticated, async (req, res, next) => {
+//   try {
+//     const postId = req.params.postId;
+//     const commentId = req.params.commentId;
+//     const userId = req.payload._id;
 
-    const post = await UserPost.findById(postId);
-    if (!post) {
-      return res.status(404).json({ message: 'Post not found' });
-    }
+//     const post = await UserPost.findById(postId);
+//     if (!post) {
+//       return res.status(404).json({ message: 'Post not found' });
+//     }
 
-    const comment = await Comments.findById(commentId);
-    if (!comment) {
-      return res.status(404).json({ message: 'Comment not found' });
-    }
+//     const comment = await Comments.findById(commentId);
+//     if (!comment) {
+//       return res.status(404).json({ message: 'Comment not found' });
+//     }
 
-    if (comment.user.toString() !== userId) {
-      return res.status(403).json({ message: 'Unauthorized to delete this comment' });
-    }
+//     if (comment.user.toString() !== userId) {
+//       return res.status(403).json({ message: 'Unauthorized to delete this comment' });
+//     }
 
-    await Comments.findByIdAndDelete(commentId);
+//     await Comments.findByIdAndDelete(commentId);
 
-    res.status(200).json({ message: 'Comment deleted successfully' });
-  } catch (error) {
-    res.status(500).json({ message: 'Error deleting comment' });
-  }
-});
+//     res.status(200).json({ message: 'Comment deleted successfully' });
+//   } catch (error) {
+//     res.status(500).json({ message: 'Error deleting comment' });
+//   }
+// });
 
 
 

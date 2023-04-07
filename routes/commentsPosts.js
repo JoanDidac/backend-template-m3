@@ -3,9 +3,10 @@ const { isAuthenticated } = require('../middlewares/jwt');
 const Comment = require('../models/Comments');
 
 // @desc    CREATE comment
-// @route   POST /posts/:postId/comments
+// @route   POST /comments/:postId
 // @access  Private
-router.post('/:postId/comments', isAuthenticated, async (req, res, next) => {
+router.post('/:postId', isAuthenticated, async (req, res, next) => {
+  console.log('Creating')
   try {
     const commentData = {
       post: req.params.postId,
@@ -21,9 +22,9 @@ router.post('/:postId/comments', isAuthenticated, async (req, res, next) => {
 });
 
 // @desc    GET all comments for a specific post
-// @route   GET /posts/:postId/comments
+// @route   GET /comments/:postId
 // @access  Private
-router.get('/:postId/comments', isAuthenticated, async (req, res, next) => {
+router.get('/:postId', isAuthenticated, async (req, res, next) => {
   try {
     const comments = await Comment.find({ post: req.params.postId });
 
@@ -38,9 +39,9 @@ router.get('/:postId/comments', isAuthenticated, async (req, res, next) => {
 });
 
 // @desc    DELETE a comment by ID
-// @route   DELETE /posts/comments/:commentId
+// @route   DELETE /comments/:commentId
 // @access  Private
-router.delete('/comments/:commentId', isAuthenticated, async (req, res, next) => {
+router.delete('/:commentId', isAuthenticated, async (req, res, next) => {
   try {
     const comment = await Comment.findByIdAndDelete(req.params.commentId);
 
@@ -55,9 +56,9 @@ router.delete('/comments/:commentId', isAuthenticated, async (req, res, next) =>
 });
 
 // @desc    UPDATE a comment by ID
-// @route   PUT /posts/comments/:commentId
+// @route   PUT /comments/:commentId
 // @access  Private
-router.put('/comments/:commentId', isAuthenticated, async (req, res, next) => {
+router.put('/:commentId', isAuthenticated, async (req, res, next) => {
   try {
     const updatedComment = await Comment.findByIdAndUpdate(
       req.params.commentId,

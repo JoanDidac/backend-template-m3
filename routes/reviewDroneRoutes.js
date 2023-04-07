@@ -29,6 +29,20 @@ router.get('/', async (req, res, next) => {
       res.status(500).json({ message: 'Error fetching single review when /reviews/:id' });
     }
   });
+  
+  // @desc    Check if a review exists for a given drone and user
+  // @route   GET /reviews/check-review/:droneId/:userId
+  // @access  Private
+  router.get('/check-review/:droneId/:userId', isAuthenticated, async (req, res, next) => {
+    try {
+      const { droneId, userId } = req.params;
+      const review = await ReviewDrone.findOne({ drone: droneId, user: userId });
+      res.status(200).json(Boolean(review));
+    } catch (error) {
+    next(error);
+    }
+});
+
 
   // @desc    CREATE NEW review
   // @route   POST /reviews
