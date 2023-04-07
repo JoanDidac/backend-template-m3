@@ -12,11 +12,11 @@ const userPostSchema = new Schema({
     required: true
   },
   message: {
-    type: String,
+    type: [String],
     required: true
   },
   media: {
-    type: String,
+    type: [String],
     required:true
   },
   location: {

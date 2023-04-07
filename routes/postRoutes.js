@@ -16,6 +16,22 @@ router.get('/posts', async (req, res, next) => {
   }
 });
 
+// @desc    GET a single post by id
+// @route   GET /posts/:id
+// @access  PUBLIC
+router.get('/posts/:id', async (req, res, next) => {
+  try {
+    const postId = req.params.id;
+    const post = await UserPost.findById(postId).populate('user');
+    if (!post) {
+      return res.status(404).json({ message: 'Post not found' });
+    }
+    res.status(200).json(post);
+  } catch (error) {
+    res.status(500).json({ message: 'Error fetching post' });
+  }
+});
+
 
 // @desc    CREATE POST with media
 // @route   POST /posts
