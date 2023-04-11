@@ -91,18 +91,72 @@ router.post('/login', async (req, res, next) => {
 // @desc    GET logged in user
 // @route   GET ?
 // @access  Private
-router.get('/me', isAuthenticated, (req, res, next) => {
+router.get('/me', isAuthenticated, async (req, res, next) => {
   try {
     // If JWT token is valid: payload gets decoded by the
     // isAuthenticated middleware and made available on req.payload
     console.log('Whose token is on the request:', req.payload);
-    // Send back the object with user data
-    // previously set as the token payload
-    res.status(200).json(req.payload);
+    // Fetch user data from the database using the user's _id
+    const user = await User.findById(req.payload._id).select('-hashedPassword');
+    if (!user) {
+      return res.status(404).json({ message: 'User not found' });
+    }
+    // Send back the user data
+    res.status(200).json(user);
   } catch (error) {
     next(error);
   }
-})
+});
+
+// @desc    GET user's profile
+// @route   GET /auth/myprofile
+// @access  Private
+router.get('/myprofile', isAuthenticated, async (req, res, next) => {
+  try {
+    // If JWT token is valid: payload gets decoded by the
+    // isAuthenticated middleware and made available on req.payload
+    console.log('Whose token is on the request:', req.payload);
+    // Fetch user data from the database using the user's _id
+    const user = await User.findById(req.payload._id).select('-hashedPassword');
+    if (!user) {
+      return res.status(404).json({ message: 'User not found' });
+    }
+    // Send back the user data
+    res.status(200).json(user);
+  } catch (error) {
+    next(error);
+  }
+});
+
+router.put('/myprofile', isAuthenticated, async (req, res, next) => {
+try {
+  const userId = req.payload._id;
+  const { email, username, password } = req.body;
+  let updateData = { email, username };
+
+  // If the password field is not empty, hash the new password
+  if (password && password !== "") {
+    const salt = bcrypt.genSaltSync(saltRounds);
+    const hashedPassword = bcrypt.hashSync(password, salt);
+    updateData.password = hashedPassword;
+  }
+
+  const updatedUser = await User.findByIdAndUpdate(userId, updateData, { new: true });
+
+  if (!updatedUser) {
+    return res.status(404).json({ message: 'User not found' });
+  }
+
+  // Remove the hashedPassword from the response
+  const userData = updatedUser.toObject();
+  delete userData.hashedPassword;
+
+  res.status(200).json({ success: true, data: userData });
+} catch (error) {
+  console.error("Error updating user profile:", error); // Add this line for error logging
+  res.status(500).json({ message: 'Error updating user profile' });
+}
+});
 
 // @desc    EDIT USER
 // @route   PUT 
