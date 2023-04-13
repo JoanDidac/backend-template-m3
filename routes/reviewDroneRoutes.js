@@ -120,7 +120,7 @@ router.put("/edit/:id", isAuthenticated, async (req, res, next) => {
   }
 });
 
-// @desc    GET all reviews for drone by ID
+// @desc    GET all reviews for drone by ID "View REviews" button in DroneList.jsx
 // @route   GET /reviews/drone/:id
 // @access  PUBLIC!!!
 router.get("/drone/:id", async (req, res, next) => {
@@ -131,6 +131,22 @@ router.get("/drone/:id", async (req, res, next) => {
     next(error);
   }
 });
+// @desc    GET reviews by user ID  "My Reviews" button in MyProfile.jsx
+// @route   GET /reviews/user/:id
+// @access  Private
+router.get("/user/:id", isAuthenticated, async (req, res, next) => {
+  const userId = req.params.id;
+  try {
+    const reviews = await ReviewDrone.find({ user: userId }).populate("drone");
+    if (!reviews) {
+      return res.status(404).json({ message: "Drones not found when /reviews/user/:id" });
+    }
+    res.status(200).json(reviews);
+  } catch (error) {
+    res.status(500).json({ message: "Error fetching reviews when /reviews/user/:id" });
+  }
+});
+
 
 // @desc    DELETE review by ID
 // @route   DELETE /reviews/:id
