@@ -42,17 +42,13 @@ router.post('/posts', isAuthenticated , async (req, res, next) => {
     const postTitle = req.body.title;
     const postMessage = req.body.message;
     const media = req.body.media;
-
-    const newPost = new UserPost({
+    const newPost = await UserPost.create({
       user: userId,
       title: postTitle,
       message: postMessage,
       media: media
     });
-
-    await newPost.save();
-
-    res.status(201).json({ message: 'Post created with media successfully ✓' });
+    res.status(201).json({newPost});
   } catch (error) {
     res.status(500).json({ message: 'Error creating post with media pal 🤬' });
   }
