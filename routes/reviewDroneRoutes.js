@@ -8,7 +8,7 @@ const ReviewDrone = require("../models/ReviewDrone");
 // @access  PUBLIC!!!
 router.get("/", async (req, res, next) => {
   try {
-    const review = await ReviewDrone.find();
+    const review = await ReviewDrone.find().populate('drone');
     res.status(200).json(review);
   } catch (error) {
     next(error);
@@ -125,8 +125,8 @@ router.put("/edit/:id", isAuthenticated, async (req, res, next) => {
 // @access  PUBLIC!!!
 router.get("/drone/:id", async (req, res, next) => {
   try {
-    const review = await ReviewDrone.find({ drone: req.params.id });
-    res.status(200).json(review);
+    const reviews = await ReviewDrone.find({ drone: req.params.id }).populate('drone');
+    res.status(200).json(reviews);
   } catch (error) {
     next(error);
   }
