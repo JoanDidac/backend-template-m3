@@ -19,19 +19,19 @@ const userPostSchema = new Schema({
     type: [String],
     required:true
   },
-  location: {
-    type: {
-      latitude: {
-        type: Number,
-        // required: true
-      },
-      longitude: {
-        type: Number,
-        // required: true
-      }
-    },
-    // required: true
-  }
+  // location: {
+  //   type: {
+  //     latitude: {
+  //       type: Number,
+  //       // required: true
+  //     },
+  //     longitude: {
+  //       type: Number,
+  //       // required: true
+  //     }
+  //   },
+  //   // required: true
+  // }
 },
   {
     timestamps: true
