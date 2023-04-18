@@ -2,9 +2,9 @@ const mongoose = require("mongoose");
 const { Schema, model } = mongoose;
 
 const likeSchema = new Schema({
-  drone: {
+  post: {
     type: Schema.Types.ObjectId,
-    ref: "Drone",
+    ref: "Post",
     required: true
   },
   username: {

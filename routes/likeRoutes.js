@@ -3,20 +3,42 @@ const router = express.Router();
 const { isAuthenticated } = require('../middlewares/jwt');
 const Like = require('../models/Like');
 
+// @desc    Get like status for a specific post and user
+// @route   GET /likes/status/:postId
+// @access  Private
+router.get('/status/:postId', isAuthenticated, async (req, res, next) => {
+  try {
+    const userId = req.payload._id;
+    const postId = req.params.postId;
+
+    const like = await Like.findOne({ post: postId, username: userId });
+
+    if (like) {
+      res.status(200).json({ liked: true });
+    } else {
+      res.status(200).json({ liked: false });
+    }
+  } catch (error) {
+    res.status(500).json({ message: 'Error getting like status' });
+  }
+});
+
+
+
 // @desc    CREATE NEW like
 // @route   POST /likes
 // @access  Private
 router.post('/', isAuthenticated, async (req, res, next) => {
     try {
       const likeData = {
-        drone: req.body.drone,
+        post: req.body.post,
         username: req.payload._id
       };
   
       // Check if the user has already liked the drone by ID!
       const existingLike = await Like.findOne(likeData);
       if (existingLike) {
-        return res.status(400).json({ message: 'You have already liked this drone' });
+        return res.status(200).json({ message: 'You have already liked this post' });
       }
   
       const like = await Like.create(likeData);
