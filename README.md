@@ -7,13 +7,16 @@ This is a the backend repository for the React application `Sky Pulse`.
 
 ## Relevant Models
 ### Drone model:
+```js
 {
   "name": String,
   "imageUrl": String,
   "description": String,
   "user": ObjectId
 }
+```
 ### Post Model:
+```js
 {
   "title": String,
   "content": String,
@@ -21,7 +24,9 @@ This is a the backend repository for the React application `Sky Pulse`.
   "drone": ObjectId,
   "user": ObjectId
 }
+```
 ### Review Model:
+```js
 {
   "title": String,
   "content": String,
@@ -29,12 +34,15 @@ This is a the backend repository for the React application `Sky Pulse`.
   "drone": ObjectId,
   "user": ObjectId
 }
+```
 ### Comment Model :
+```js
 {
   "content": String,
   "post": ObjectId,
   "user": ObjectId
 }
+```
 
 ### User
 
