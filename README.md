@@ -93,8 +93,8 @@ Users in the database have the following properties:
 
 ## Useful links
 
-- [Presentation slides]()
-- [Frontend repository]()
-- [Frontend deploy]()
-- [Deployed REST API]()
+- [Presentation slides]('https://www.canva.com/design/DAFgdhmtP-A/9KYNSXeZWRcuYay311CfhA/view?utm_content=DAFgdhmtP-A&utm_campaign=designshare&utm_medium=link&utm_source=publishsharelink#1')
+- [Frontend repository]('https://github.com/JoanDidac/frontend-template-m3.git')
+- [Frontend deploy]('https://sky-pulse.netlify.app/')
+- [Backend repository]('https://github.com/JoanDidac/backend-template-m3.git')
 
